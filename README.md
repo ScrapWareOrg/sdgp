@@ -51,6 +51,8 @@ StartupNotify=true
 
 1. Add right-click action for thunar(python -m sdgp -i %f)
 
+![sample](https://raw.githubusercontent.com/ScrapWareOrg/sdgp/refs/heads/main/xfce-sample.png)
+
 -----
 ## Others
 
