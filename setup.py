@@ -35,7 +35,7 @@ gtk_dialog_module = Extension(
 
 setup(
     name='sdgp',
-    version='0.90.0',
+    version='0.91.0',
     packages=find_packages(exclude=['tests']),
     ext_modules=[
         gtk_dialog_module
