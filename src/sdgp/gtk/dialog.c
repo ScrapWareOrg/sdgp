@@ -1,4 +1,6 @@
 #include <gtk/gtk.h>
+
+#define PY_SSIZE_T_CLEAN
 #include <Python.h>
 
 #ifdef WITH_DOC_STRINGS
@@ -9,10 +11,11 @@
 
 #define Py_RETURN_NONE return Py_None
 
-#define DEFAULT_LABEL "Dialog"
+#define DEFAULT_TITLE "sd-get-prompt"
+#define DEFAULT_LABEL "SD Created Info"
 #define DEFAULT_MTEXT "Nothing Input Text."
 
-int dialog(gint GTK_MESSAGE_TYPE, gint GTK_BUTTON_TYPE, const char *GTK_LABEL_TEXT, const char *msg){
+int gdialog(int GTK_MESSAGE_TYPE, int GTK_BUTTON_TYPE, const char *GTK_LABEL_TEXT, const char *msg){
 
     GtkClipboard *clip;
        GtkWidget *iDlg;
@@ -23,13 +26,14 @@ int dialog(gint GTK_MESSAGE_TYPE, gint GTK_BUTTON_TYPE, const char *GTK_LABEL_TE
         GTK_DIALOG_MODAL,
         GTK_MESSAGE_TYPE,
         GTK_BUTTON_TYPE,
-        DEFAULT_LABEL
+        "%s",
+        GTK_LABEL_TEXT
     );
 
     gtk_window_set_skip_taskbar_hint(GTK_WINDOW(iDlg), 0);
     gtk_window_set_position(GTK_WINDOW(iDlg), GTK_WIN_POS_CENTER);
-    gtk_window_set_title(GTK_WINDOW(iDlg), GTK_LABEL_TEXT);
-    gtk_message_dialog_format_secondary_text(GTK_MESSAGE_DIALOG(iDlg), "%s", (gchar*)msg);
+    gtk_window_set_title(GTK_WINDOW(iDlg), DEFAULT_TITLE);
+    gtk_message_dialog_format_secondary_text(GTK_MESSAGE_DIALOG(iDlg), "%s", msg);
 
     rslt = gtk_dialog_run(GTK_DIALOG(iDlg));
 
@@ -43,17 +47,15 @@ int dialog(gint GTK_MESSAGE_TYPE, gint GTK_BUTTON_TYPE, const char *GTK_LABEL_TE
 }
 
 /* gtk_message_dialog */
-static PyObject *
-dialog_dialog(PyObject *self, PyObject *args)
+static PyObject *dialog(PyObject *self, PyObject *args)
 {
     const char *dtext;
     const char *label;
-          gint *dtemp;
-          gint *btemp;
-          gint  dtype;
-          gint  btype;
-           int  dretv;
-    if (!PyArg_ParseTuple(args, "ssi", 1, 2, 3, &dtext, &label, &dtemp, &btemp)) {
+           int  dtype = GTK_MESSAGE_INFO;
+           int  btype = GTK_BUTTONS_OK;
+           int  dretv = 0;
+
+    if (!PyArg_ParseTuple(args, "ssii", &dtext, &label, &dtype, &btype)) {
         return NULL; // 引数解析エラー
     }
     // LABEL
@@ -64,22 +66,10 @@ dialog_dialog(PyObject *self, PyObject *args)
     if(label == NULL){
         label = DEFAULT_LABEL;
     }
-    // DIALOG TYPE
-    if(dtemp == NULL){
-        dtype = GTK_MESSAGE_INFO;
-    } else {
-        dtype = *dtemp;
-    }
-    // BUTTON TYPE
-    if(btemp == NULL){
-        btype = GTK_BUTTONS_OK;
-    } else if(*btemp < GTK_BUTTONS_OK){
-        btype = GTK_BUTTONS_OK;
-    } else {
-        btype = *btemp;
-    }
 
-    dretv = dialog(dtype, btype, label, dtext);
+    //printf("%s\n%s\n%d\n%d\n", dtext, label, dtype, btype);
+
+    dretv = gdialog(dtype, btype, label, dtext);
 
     return Py_BuildValue("i", dretv);
 
@@ -87,7 +77,7 @@ dialog_dialog(PyObject *self, PyObject *args)
 
 // モジュール内のメソッド定義
 static PyMethodDef dialog_methods[] = {
-    {"dialog", dialog_dialog, METH_VARARGS,
+    {"dialog", dialog, METH_VARARGS,
      "A simply GTK dialog."},
     {NULL, NULL, 0, NULL} // メソッドリストの終端
 };
@@ -102,14 +92,16 @@ static struct PyModuleDef dialog_module = {
 };
 
 // モジュール初期化関数 (Pythonがインポート時に呼び出す)
-PyMODINIT_FUNC
-PyInit_dialog(void)
+PyMODINIT_FUNC PyInit_dialog(void)
 {
 
     PyObject* pModule = PyModule_Create(&dialog_module);
     if (pModule == NULL) {
         return NULL;
     }
+
+    // Gtk初期化
+    gtk_init(0, NULL);
 
     // 変数定義例
     // PyObject* は各変数ごとに新しい名前を使い、適切なフォーマット文字列を使用します。
@@ -119,10 +111,9 @@ PyInit_dialog(void)
 
     //PyObject_SetAttrString(pModule, "my_variable_str", pValue)
 
-    //int c_bool_value = 1; // Cのint型
-    //PyObject* py_bool_true = PyBool_FromLong(c_bool_value);
+    //int c_true_value = 1; // Cのint型
+    //PyObject* py_bool_true = PyBool_FromLong(c_true_value);
     // これで py_bool_true は Python の True オブジェクトになります
-
     int c_false_value = 0;
     PyObject* py_bool_false = PyBool_FromLong(c_false_value);
     // これで py_bool_false は Python の False オブジェクトになります
@@ -135,7 +126,7 @@ PyInit_dialog(void)
     // py_bool の参照はPyModule_AddObjectが奪ったため、ここではPy_DECREFは不要
 
     /* Icon */
-    PyObject* pGtkMessageInfo = Py_BuildValue("p", 0);
+    PyObject* pGtkMessageInfo = Py_BuildValue("i", 0);
     if (pGtkMessageInfo == NULL) { Py_DECREF(pModule); return NULL; }
     if (PyModule_AddObject(pModule, "GTK_MESSAGE_INFO", pGtkMessageInfo) < 0) { Py_DECREF(pGtkMessageInfo); Py_DECREF(pModule); return NULL; }
 
@@ -180,10 +171,9 @@ PyInit_dialog(void)
     if (pGtkButtonsOkCancel == NULL) { Py_DECREF(pModule); return NULL; }
     if (PyModule_AddObject(pModule, "GTK_BUTTONS_OK_CANCEL", pGtkButtonsOkCancel) < 0) { Py_DECREF(pGtkButtonsOkCancel); Py_DECREF(pModule); return NULL; }
 
-
     PyObject* pString = Py_BuildValue("s", "Hello from C!");
     if (pString == NULL) { Py_DECREF(pModule); return NULL; }
-    if (PyModule_AddObject(pModule, "my_string", pString) < 0) {
+    if (PyModule_AddObject(pModule, "test_string", pString) < 0) {
         Py_DECREF(pString); // 失敗したらオブジェクトを解放
         Py_DECREF(pModule);
         return NULL;

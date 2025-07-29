@@ -14,8 +14,8 @@ def pkgconfig_flags(package, flag_type):
 
 opt_cflags = ["-Werror=format-security"]
 # GTK 2.0
-gtk2_cflags = pkgconfig_flags('gtk+-3.0', 'cflags')
-gtk2_libs = pkgconfig_flags('gtk+-3.0', 'libs')
+gtk2_cflags = pkgconfig_flags('gtk+-2.0', 'cflags')
+gtk2_libs = pkgconfig_flags('gtk+-2.0', 'libs')
 # GLib 2.0
 glib2_cflags = pkgconfig_flags('glib-2.0', 'cflags')
 glib2_libs = pkgconfig_flags('glib-2.0', 'libs')

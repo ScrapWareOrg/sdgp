@@ -1,13 +1,6 @@
-````markdown
-# SDGP(Stable-Diffusion-Get-Prompt)
+[[sd-get-prompt (Native C Version)](https://github.com/ScrapWare/sd-get-prompt)]
 
-Easy display for Stable Diffusion tEXt(Meitu iTXt) Exif data. Anyone can copy and paste from GTK+ dialog.
-
-Sample picture is Japanese language but everybodは can understanding through SD(Stable Diffusion) icon picture on right click menu.
-
-Showing Creation AI Configuration Info.
-````
------
+---
 # SDGP(Stable-Diffusion-Get-Prompt)
 
 Easy display for Stable Diffusion tEXt(Meitu iTXt) Exif data. Anyone can copy and paste from GTK+ dialog.
@@ -29,7 +22,7 @@ How to use?
 1. create .desktop file.
 2. place to .kde/share/kde4/services/ServiceMenus/
 
-````
+````markdown
 [Desktop Entry]  
 Version=1.0  
 Type=Application  
