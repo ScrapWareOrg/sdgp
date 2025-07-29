@@ -10,11 +10,28 @@ Sample picture is Japanese language but everybodは can understanding through SD
 Showing Creation AI Configuration Info.
 
 -----
+# Usage (Python Module)
+
+1. Use as Library
+
+```markdown
+from sdgp import sdgp
+
+# return dict of iTXt contents
+dict = sdgp(path)
+```
+
+2. commandline
+
+```markdown
+python -m sdgp -i PATH
+```
+-----
 # Usage (Right Clickable)
 
 How to use?
 
-1. Add path to ~/bin and place it.
+1. Run to python -m sdgp -i *PATH*
 
 -----
 ## KDE

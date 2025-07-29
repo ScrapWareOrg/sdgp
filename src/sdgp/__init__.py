@@ -128,7 +128,8 @@ def sdgp(path):
     hako = read_exif(path)
 
     if '_ERROR_' in hako:
-        dialog(e['_ERROR_'], __name__, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK)
+        dialog(hako['_ERROR_'], __name__, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK)
+        return None
 
     hako.pop("PNG")
 
