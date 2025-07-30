@@ -1,6 +1,7 @@
-[[Installation()](#Installation)] [[sd-get-prompt (Native C Version)](https://github.com/ScrapWare/sd-get-prompt)]
+[[Installation(Recommended)](#Installation)] | | [[sd-get-prompt (Native C Version)](https://github.com/ScrapWare/sd-get-prompt)]
+
 ---
-# SDGP(Stable-Diffusion-Get-Prompt)
+# SDGP (Stable-Diffusion-Get-Prompt)
 
 Easy display for Stable Diffusion tEXt(Meitu iTXt) Exif data. Anyone can copy and paste from GTK+ dialog.
 
@@ -77,60 +78,106 @@ GLib and GTK+ needed(MingW, CYgwin, Others).
 -----
 # <a id="Installation" name="Installation">Installation</a>
 
-This package includes C extensions that require compilation during installation. Therefore, your system needs to have the necessary development environment set up.
+This is a desktop application built with Python using the GTK3 toolkit. It leverages **PyGObject** (the Python bindings for GTK and other GNOME libraries) to create a native user interface.
 
----
-## Prerequisites for Compilation
+-----
+## Features
 
-Before installing the package, ensure the following development tools and libraries are installed on your system:
+* **Modern GTK3 Interface:** Utilizes the latest GTK3 features for a contemporary look and feel.
+* **Pythonic Development:** Written entirely in Python, making it easy to read, understand, and extend.
+* **Pango Text Rendering:** Supports rich text formatting using Pango attributes for enhanced text presentation (e.g., bold, italics, colors, varying font sizes).
+* **(Add more specific features of your application here, e.g., "File management," "Data visualization," etc.)**
 
- * C/C++ Compiler: Such as GCC on Linux, Clang on macOS, or MinGW-w64 on Windows.
- * pkg-config: A utility used to find compiler and linker flags for installed libraries.
- * GTK 3 Development Files: The development headers and libraries for GTK 3.
- * libpng Development Files: The development headers and libraries for libpng.
+## Requirements
 
----
-## Installation Steps
+Before running the application, ensure you have the necessary dependencies installed.
 
-Once the prerequisites are met, you can install the package using pip:
-pip install your_package_name
+* Python 3.x
+* GTK3 Development Files
+* PyGObject
 
-(Replace your_package_name with the actual name of your package on PyPI.)
-Detailed Setup Instructions by OS
+### Installation on Linux (Debian/Ubuntu)
 
----
-### Linux (Debian/Ubuntu-based)
+1.  **Update your package list:**
+    ```bash
+    sudo apt update
+    ```
+2.  **Install Python 3, GTK3 development files, and PyGObject:**
+    ```bash
+    sudo apt install python3 python3-venv gir1.2-gtk-3.0 python3-gi
+    ```
+    `gir1.2-gtk-3.0` provides the necessary GObject Introspection data for GTK3, and `python3-gi` is the Python binding itself.
 
-```
-sudo apt update
-sudo apt install build-essential pkg-config libgtk-2-dev
-```
+### Installation on Windows (using MSYS2)
 
-### Linux (Fedora/RHEL-based)
-```
-sudo dnf install @development-tools pkg-config gtk2-devel
-```
+For Windows, using [MSYS2](https://www.msys2.org/) is the recommended way to get a working GTK3 development environment.
 
-### macOS
+1.  **Download and install MSYS2** from the official website.
+2.  **Open an MSYS2 UCRT64 (or MINGW64) terminal.**
+3.  **Update the package database:**
+    ```bash
+    pacman -Syu
+    ```
+    (You might need to run this multiple times and restart the terminal.)
+4.  **Install Python, pip, GTK3, and PyGObject:**
+    ```bash
+    pacman -S python3 python3-pip mingw-w64-ucrt-x86_64-gtk3 mingw-w64-ucrt-x86_64-python-gobject
+    ```
+    (Adjust `ucrt` to `mingw` if you are using the MINGW64 terminal.)
 
-You can install the prerequisites using Homebrew:
+### Installation on macOS (using Homebrew)
 
-```
-brew install pkg-config gtk+2
-```
+1.  **Install Homebrew** if you haven't already:
+    ```bash
+    /bin/bash -c "$(curl -fsSL [https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh](https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh))"
+    ```
+2.  **Install GTK3:**
+    ```bash
+    brew install gtk+3
+    ```
+3.  **Install PyGObject via pip:**
+    ```bash
+    pip3 install PyGObject
+    ```
 
-### Windows
+## Setup and Running
 
-On Windows, we recommend using the MSYS2 environment with the MinGW-w64 toolchain.
+It's highly recommended to use a **Python virtual environment** for dependency management.
 
- * Download and install MSYS2 from the official MSYS2 website.
- * Open the "MSYS2 MinGW 64-bit" terminal (from your Start Menu).
- * Inside the MSYS2 terminal, update the package lists and install the necessary development packages:
-   pacman -Syu
+1.  **Create a virtual environment:**
+    When working with GTK and PyGObject, it's crucial to create the virtual environment with access to system site-packages so it can find the installed GTK libraries.
+    ```bash
+    python3 -m venv venv --system-site-packages
+    ```
+    (You can replace `venv` with your preferred virtual environment name.)
 
-```
-pacman -S mingw-w64-x86_64-gcc mingw-w64-x86_64-pkg-config mingw-w64-x86_64-gtk2
-```
+2.  **Activate the virtual environment:**
+    ```bash
+    source venv/bin/activate
+    ```
+    On Windows (MSYS2):
+    ```bash
+    source venv/bin/activate
+    ```
+    (Or `.\venv\Scripts\activate` in Command Prompt/PowerShell if not using MSYS2.)
 
- * After installing the prerequisites, you can then run the pip install command from the same MSYS2 MinGW 64-bit terminal.
-This README.md content should clearly guide users through the installation process for your package.
+3.  **Install project dependencies:**
+    Once the virtual environment is active, install any specific Python dependencies listed in `requirements.txt`.
+    ```bash
+    pip install -r requirements.txt
+    ```
+    (Ensure `requirements.txt` is in your project's root directory.)
+
+4.  **Run the application:**
+    ```bash
+    python your_main_script.py
+    ```
+    (Replace `your_main_script.py` with the actual name of your application's main Python file.)
+
+## Contribution (Optional)
+
+If you'd like to contribute to this project, please feel free to fork the repository, make your changes, and submit a pull request.
+
+## License (Optional)
+
+This project is licensed under the [Resist-Psychiatry Declaration License & GNU GPL VERSION 3] - see the [LICENSE.RPTv1](LICENSE.RPTv1) and [LICENSE.GPLv3](LICENSE.GPLv3) file for details.

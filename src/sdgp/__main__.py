@@ -10,13 +10,10 @@ import urllib.parse
 ######################################################################
 # LIBS
 
-from sdgp import sdgp
-from sdgp.gtk.dialog import *
-
-######################################################################
-# VARS
-
-APPNAME = "sdgp"
+from sdgpp import sdgp
+from sdgpp.gtk import *
+from sdgpp.gtk.dialog import dialog
+#from sdgpp.gtk.txview import txview
 
 ######################################################################
 # ArgParse
@@ -40,18 +37,20 @@ def main():
         prmp = prmp.replace(">", "&gt;")
         prmp = prmp.replace("\x22", "&quot;")
         prmp = prmp.replace("|", "\\|")
+        prmp = re.sub("[\r\n]$", "", prmp)
 
         ngtv = hako.pop("negativePrompt").replace("<", "&lt;")
         ngtv = ngtv.replace(">", "&gt;")
         ngtv = ngtv.replace("\x22", "&quot;")
         ngtv = ngtv.replace("|", "\\|")
+        prmp = re.sub("[\r\n]$", "", prmp)
 
         hall = f"Prompt: {prmp}\n\nNegative Prompt: {ngtv}\n\n" #json.dumps(hako, indent=4)
 
         for k in hako.keys():
             hall = hall + f"{k}: {hako[k]}, "
 
-        dialog(hall, "SD Created Info", GTK_MESSAGE_INFO, GTK_BUTTONS_OK)
+        dialog(hall, 'Stable Diffusion Creation Info', 'sd-get-prompt', GTK_MESSAGE_INFO, GTK_BUTTONS_OK)
 
 ######################################################################
 # MAIN

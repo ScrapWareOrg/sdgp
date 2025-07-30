@@ -4,11 +4,6 @@ import json
 import re
 
 ######################################################################
-# LIBS
-
-from sdgp.gtk.dialog import *
-
-######################################################################
 # VARS
 
 PNGH = b"\x89\x50\x4e\x47\x0d\x0a\x1a\x0a"
@@ -128,7 +123,7 @@ def sdgp(path):
     hako = read_exif(path)
 
     if '_ERROR_' in hako:
-        dialog(hako['_ERROR_'], __name__, GTK_MESSAGE_ERROR, GTK_BUTTONS_OK)
+        print(hako['_ERROR_'])
         return None
 
     hako.pop("PNG")
