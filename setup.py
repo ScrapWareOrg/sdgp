@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='sdgp',
-    version='0.92.0',
+    version='0.95.0',
     packages=find_packages(exclude=['tests']),
     entry_points={
         'console_scripts': [
