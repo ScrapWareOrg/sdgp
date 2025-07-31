@@ -10,9 +10,9 @@ import urllib.parse
 ######################################################################
 # LIBS
 
-from sdgpp import sdgp
-from sdgpp.gtk import *
-from sdgpp.gtk.dialog import dialog
+from sdgp import sdgp
+from sdgp.gtk import *
+from sdgp.gtk.dialog import dialog
 #from sdgpp.gtk.txview import txview
 
 ######################################################################
