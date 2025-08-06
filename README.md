@@ -25,6 +25,11 @@ dict = sdgp(path)
 
 ```markdown
 python -m sdgp -i PATH
+
+or use TextView
+
+python -m sdgp -i PATH --textview
+
 ```
 -----
 # Usage (Right Clickable)
