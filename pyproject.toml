@@ -7,7 +7,7 @@ where = ["src/"]
 
 [project]
 name = "sdgp"
-version = "0.95.1"
+version = "0.96.0"
 authors = [
   { name="Twinkle Computing", email="twinkle@twinkle.work" },
 ]

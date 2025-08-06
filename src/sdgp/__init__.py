@@ -4,6 +4,11 @@ import json
 import re
 
 ######################################################################
+# LIBS
+
+from sdgp.Gtk import *
+
+######################################################################
 # VARS
 
 PNGH = b"\x89\x50\x4e\x47\x0d\x0a\x1a\x0a"
@@ -83,6 +88,7 @@ def read_exif(f) -> dict:
     # parameters
     p = fh.read(e['parameters_Size'])
 
+    # Stable-Diffusion
     if re.match('parameters', p.decode('utf-8')):
         t = re.sub('^parameters.', '', p.decode('utf-8'))
         s = t.split('\n', 2);
@@ -92,9 +98,21 @@ def read_exif(f) -> dict:
         for i in range(len(r)):
             k, v = r[i].split(': ', 1)
             e[k] = v
+    # Flux
+    elif re.match('prompt', p.decode('utf-8')):
+        t = re.sub('^prompt.', '', p.decode('utf-8'))
+        s = t.split('\n', 2);
+        t = re.sub('[^\w\}]$', '', t)
+        mg = json.loads(t)
+        for k in mg.keys():
+            if k.isdigit() and mg[k]["class_type"] == "CLIPTextEncode":
+                e['prompt'] = mg[k]["inputs"]["text"]
+                del mg[k]["inputs"]["text"]
+            else: e[k] = mg[k]
+    # Tensor.Art
     elif re.match('generation_data', p.decode('utf-8')):
         t = re.sub('^generation_data.', '', p.decode('utf-8'))
-        t = re.sub('[^\w]$', '', t)
+        t = re.sub('[^\w\}]$', '', t)
         mg = json.loads(t)
         for k in mg.keys():
             e[k] = mg[k]
@@ -124,6 +142,7 @@ def sdgp(path):
 
     if '_ERROR_' in hako:
         print(hako['_ERROR_'])
+        gdialog(hako['_ERROR_'], 'Stable Diffusion Creation Info', 'sd-get-prompt', GTK_MESSAGE_ERROR, GTK_BUTTONS_OK, True)
         return None
 
     hako.pop("PNG")
