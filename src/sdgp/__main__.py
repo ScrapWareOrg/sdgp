@@ -36,22 +36,22 @@ def main():
         # Pass Nothing
         if "prompt" in hako:
             prmp = hako.pop("prompt")
-            #prmp = prmp.replace("<", "&lt;")
-            #prmp = prmp.replace(">", "&gt;")
-            #prmp = prmp.replace("\x22", "&quot;")
+            prmp = prmp.replace("<", "[")
+            prmp = prmp.replace(">", "]")
+            prmp = prmp.replace("\x22", "&quot;")
             prmp = prmp.replace("&", "&amp;")
-            #prmp = prmp.replace("|", "\\|")
+            prmp = prmp.replace("|", "\\|")
             prmp = re.sub("[\r\n]$", "", prmp)
         else: prmp = ""
 
         # Pass Nothing
         if "negativePrompt" in hako:
             ngtv = hako.pop("negativePrompt")
-            #ngtv = ngtv.replace("<", "&lt;")
-            #ngtv = ngtv.replace(">", "&gt;")
-            #ngtv = ngtv.replace("\x22", "&quot;")
+            ngtv = ngtv.replace("<", "[")
+            ngtv = ngtv.replace(">", "]")
+            ngtv = ngtv.replace("\x22", "&quot;")
             ngtv = ngtv.replace("&", "&amp;")
-            #ngtv = ngtv.replace("|", "\\|")
+            ngtv = ngtv.replace("|", "\\|")
             ngtv = re.sub("[\r\n]$", "", prmp)
         else: ngtv = ""
 
